@@ -1,7 +1,10 @@
 import express from "express"
-import dotenv from "dotenv"
+
 import cors from "cors"
-dotenv.config()
+import dotenv from "dotenv"
+if(process.env.NODE_ENV !== "production") {
+  dotenv.config({ path: '.env' })
+}
 import courseRoutes from "./routes/course.routes.js"
 import { errorHandler } from "./middlewares/error.handler.middleware.js"
 import customError from "./middlewares/error.handler.middleware.js"

@@ -163,16 +163,16 @@ res.status(200).json({
 }
 }
     
-export const getallstudents =async(req,res,next)=>{
+export const getall =async(req,res,next)=>{
     try{
-        const Allstudents = await User.find().populate("course")
-        if(!Allstudents.length){
+        const All = await User.find()
+        if(!All.length){
             throw new customError("couldn't find student",404)
         }
         res.status(200).json({
             message:"successfully found",
             status:"success",
-            data:Allstudents
+            data:All
         })
     }catch(error){
         next(error)

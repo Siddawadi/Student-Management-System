@@ -3,7 +3,7 @@ import express from "express";
 import { findbySemesterandCourse } from "../controllers/student.controller.js";
 import { uploadMiddleware } from "../middlewares/multer.middleware.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
-import { findbcabysem,findbhmbysem,findbbmbysem ,findcsitbysem,findclawbysem,deletestudent} from "../controllers/student.controller.js";
+import { findbcabysem,findbhmbysem,findbbmbysem ,findcsitbysem,findclawbysem,deletestudent,updateStudent} from "../controllers/student.controller.js";
 import { USER_ROLE } from "../config/constant.config.js";
 const upload = uploadMiddleware()
 
@@ -11,6 +11,7 @@ const router = express.Router()
 router.post("/addStudent",upload.single("profile_image"),Addstudent)
 router.get("/findbySemesterandCourse",findbySemesterandCourse)
 router.get("/findall",findall)
+router.patch("/updatestudent/:id", upload.single("profile_image"), updateStudent)
 router.post("/findbcabysem",findbcabysem)
 router.post("/findbhmbysem",findbhmbysem)
 router.post("/findbbmbysem",findbbmbysem)

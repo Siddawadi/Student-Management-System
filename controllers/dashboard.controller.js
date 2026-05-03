@@ -19,7 +19,7 @@ export const getDashboardStats = async (req, res) => {
         : Math.round((present / totalAttendance) * 100)
 
     // 🔹 Total revenue (simple sum)
-    const fees = await Fee.find()
+    const fees = await Fee.find({ status: "paid" })
 
     const totalRevenue = fees.reduce((sum, fee) => {
       return sum + (fee.amount || 0)

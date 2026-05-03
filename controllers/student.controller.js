@@ -181,7 +181,39 @@ export const findcsitbysem =async (req,res,next)=>{
         next(error)
     }
 }
+export const updateStudent = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const { first_name, last_name, email, phone, semester } = req.body
 
+    const student = await Student.findById(id)
+    if (!student) {
+      throw new customError("Student not found", 404)
+    }
+
+    if (first_name) student.first_name = first_name
+    if (last_name) student.last_name = last_name
+    if (email) student.email = email
+    if (phone) student.phone = phone
+    if (semester) student.semester = semester
+
+    const file = req.file
+    if (file) {
+      const { secure_url: path, public_id } = await c_upload(file.path, dir)
+      student.profile_image = { path, public_id }
+    }
+
+    await student.save()
+
+    res.status(200).json({
+      message: "Student updated successfully",
+      status: "success",
+      data: student
+    })
+  } catch (error) {
+    next(error)
+  }
+}
 export const findclawbysem =async (req,res,next)=>{
     
     try{

@@ -3,14 +3,30 @@ import Attendance from "../models/attendance.model.js";
 
 export const Add = async (req, res, next) => {
     try {
-        const { student, course, semester, date, status } = req.body  // ← semester थपियो
+        const { student, course, semester, date, status } = req.body
 
         if (!student || !course || !semester || !date || !status) {
             throw new customError("All fields are required", 400)
         }
 
-        const att = await Attendance.create({ student, course, semester, date, status })  // ← semester थपियो
-        
+       
+        const startDate = new Date(date)
+        startDate.setHours(0, 0, 0, 0)
+        const endDate = new Date(date)
+        endDate.setHours(23, 59, 59, 999)
+
+        const existing = await Attendance.findOne({
+            student,
+            course,
+            date: { $gte: startDate, $lte: endDate }
+        })
+
+        if (existing) {
+            throw new customError("Attendance already marked for this student on this date", 400)
+        }
+
+        const att = await Attendance.create({ student, course, semester, date, status })
+
         res.status(201).json({
             message: "Attendance marked successfully",
             status: "success",
@@ -109,12 +125,11 @@ export const FindAttendance = async (req, res, next) => {
             throw new customError("All fields are required", 400)
         }
 
-        
         const startDate = new Date(date)
-        startDate.setHours(0, 0, 0, 0)
+        startDate.setUTCHours(0, 0, 0, 0)      // ✅ changed
 
         const endDate = new Date(date)
-        endDate.setHours(23, 59, 59, 999)
+        endDate.setUTCHours(23, 59, 59, 999)   // ✅ changed
 
         const attendance = await Attendance.find({
             course,
@@ -123,7 +138,6 @@ export const FindAttendance = async (req, res, next) => {
         .populate('student', 'first_name last_name phone semester')
         .populate('course', 'name')
 
-       
         const filtered = attendance.filter(
             (att) => att.student.semester === semester
         )
@@ -138,7 +152,6 @@ export const FindAttendance = async (req, res, next) => {
         next(error)
     }
 }
-
 
 export const FindAllAttendance = async (req, res, next) => {
     try {
