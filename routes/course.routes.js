@@ -8,7 +8,7 @@ router.post("/add",authenticate(USER_ROLE.ADMIN),course_add) // THIS IS ARRAY BE
 //                          if yeta bata authenticate vayesi balla post garna pauxa 
 router.get("/getall",getall)
 router.get("/view/:id",view_course)
-router.delete("/delete/:id",authenticate(USER_ROLE.ADMIN),delete_course)
-router.put("/updatecourse/:id",authenticate(USER_ROLE.ADMIN),updatecourse)
+router.delete("/delete/:id",delete_course)
+router.put("/updatecourse/:id",updatecourse)
 
 export default router
