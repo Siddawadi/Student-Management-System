@@ -22,8 +22,11 @@ const app = express()
 const port = process.env.PORT 
 // app.js
 app.use(cors({
-  origin: "http://localhost:3000",  // your frontend URL
-  credentials: true  // allows cookies to be sent/received
+  origin: [
+    "http://localhost:5173",
+    "https://student-management-system-front-end-6ahk.onrender.com"
+  ],
+  credentials: true
 }))
 app.use(cookieParser())
 app.use(express.json({}))
