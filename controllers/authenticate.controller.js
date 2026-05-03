@@ -82,11 +82,11 @@ export const login = async (req, res, next) => {
     const access_token = generateToken(payload)
 
     res.status(200)
-      .cookie('access_token', access_token, {
+.cookie('access_token', access_token, {
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: Number(process.env.COOKIE_MAX_AGE || 7) * 24 * 60 * 60 * 1000,
+    sameSite: 'none',
+    secure: true,
+    maxAge: 604800000, // 7 days in milliseconds
 })
       .json({
         message: 'Login successful',
