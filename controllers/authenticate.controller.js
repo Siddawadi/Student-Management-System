@@ -52,7 +52,6 @@ console.log(req.body)
 }
 
 
-
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body
@@ -81,19 +80,13 @@ export const login = async (req, res, next) => {
 
     const access_token = generateToken(payload)
 
-    res.status(200)
-.cookie('access_token', access_token, {
-    httpOnly: true,
-    sameSite: 'none',
-    secure: true,
-    maxAge: 604800000, // 7 days in milliseconds
-})
-      .json({
-        message: 'Login successful',
-        status: 'success',
-        data: finduser,
-        access_token
-      })
+    // ✅ No cookie - just send token in response
+    res.status(200).json({
+      message: 'Login successful',
+      status: 'success',
+      data: finduser,
+      access_token
+    })
 
   } catch (error) {
     next(error)
