@@ -83,11 +83,11 @@ export const login = async (req, res, next) => {
 
     res.status(200)
       .cookie('access_token', access_token, {
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV !== 'development',
-        maxAge: Number(process.env.COOKIE_MAX_AGE) * 24 * 60 * 60 * 1000,
-      })
+    httpOnly: true,
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: Number(process.env.COOKIE_MAX_AGE || 7) * 24 * 60 * 60 * 1000,
+})
       .json({
         message: 'Login successful',
         status: 'success',

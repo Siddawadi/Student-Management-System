@@ -6,7 +6,7 @@ import { getall } from "../controllers/course.controller.js";
 const router = express.Router()
 router.post("/add",authenticate(USER_ROLE.ADMIN),course_add) // THIS IS ARRAY BECAUSE WE CAN PASS MULTIPLE ROLES
 //                          if yeta bata authenticate vayesi balla post garna pauxa 
-router.get("/getall",authenticate(USER_ROLE.ADMIN),getall)
+router.get("/getall",getall)
 router.get("/view/:id",view_course)
 router.delete("/delete/:id",authenticate(USER_ROLE.ADMIN),delete_course)
 router.put("/updatecourse/:id",authenticate(USER_ROLE.ADMIN),updatecourse)
